@@ -1,0 +1,109 @@
+/* ========== PANEL ========== */
+.fusion-panel {
+    /* background-color set via inline style from settings */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition-duration: 200ms;
+}
+
+.fusion-panel-left,
+.fusion-panel-center,
+.fusion-panel-right {
+    padding: 0 8px;
+    spacing: 4px;
+    /* Note: 'spacing' is a GNOME Shell specific property */
+}
+
+/* ========== APP BUTTONS ========== */
+.fusion-app-button {
+    padding: 4px 6px;
+    margin: 2px;
+    border-radius: 8px;
+    transition-duration: 150ms;
+}
+
+.fusion-app-button:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.fusion-app-button:active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.fusion-app-button.running .fusion-app-indicator {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 3px;
+    margin-top: 2px;
+}
+
+.fusion-app-button.focused {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.fusion-app-button.focused .fusion-app-indicator {
+    background-color: #3584e4;
+    width: 12px !important;
+}
+
+.fusion-app-indicator {
+    border-radius: 3px;
+    margin-top: 2px;
+    transition-duration: 200ms;
+}
+
+/* ========== TOOLTIP ========== */
+.fusion-tooltip {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* ========== CLOCK ========== */
+.fusion-clock-container {
+    padding: 0 12px;
+    spacing: 4px;
+}
+
+.fusion-clock-time {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.fusion-clock-date {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+}
+
+/* ========== WORKSPACE INDICATOR ========== */
+.fusion-workspace-indicator {
+    spacing: 4px;
+    padding: 0 8px;
+}
+
+.fusion-workspace-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition-duration: 200ms;
+    margin: 0 2px;
+}
+
+.fusion-workspace-dot.active {
+    background-color: #3584e4;
+    width: 16px;
+}
+
+.fusion-workspace-dot:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ========== SYSTEM INDICATORS ========== */
+.fusion-system-indicators {
+    padding: 0 4px;
+    spacing: 4px;
+}
