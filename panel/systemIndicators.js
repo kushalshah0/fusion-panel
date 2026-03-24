@@ -23,38 +23,53 @@ export class SystemIndicators {
     }
 
     _stealIndicators() {
-        let statusArea = Main.panel.statusArea;
+    let statusArea = Main.panel.statusArea;
 
-        // These go to center
-        const centerNames = ['dateMenu', 'messageIndicator', 'notifications'];
+    const centerNames = ['dateMenu', 'messageIndicator', 'notifications'];
 
-        let allKeys = Object.keys(statusArea);
+    // These always stay at the far right, in this order
+    const pinnedRight = ['keyboard', 'a11y', 'quickSettings', 'aggregateMenu'];
 
-        for (let name of allKeys) {
-            if (statusArea[name] && statusArea[name].container) {
-                let indicator = statusArea[name];
-                let container = indicator.container;
+    let allKeys = Object.keys(statusArea);
 
-                if (container && container.get_parent()) {
-                    this._movedIndicators.push({
-                        name,
-                        indicator,
-                        originalParent: container.get_parent(),
-                        originalIndex: container.get_parent()?.get_children().indexOf(container),
-                    });
+    const moveIndicator = (name, targetActor) => {
+        let indicator = statusArea[name];
+        if (!indicator?.container) return;
+        let container = indicator.container;
+        if (!container.get_parent()) return;
 
-                    container.get_parent()?.remove_child(container);
+        this._movedIndicators.push({
+            name,
+            indicator,
+            originalParent: container.get_parent(),
+            originalIndex: container.get_parent()?.get_children().indexOf(container),
+        });
 
-                    // Route to center or right
-                    if (centerNames.includes(name)) {
-                        this.centerActor.add_child(container);
-                    } else {
-                        this.actor.add_child(container);
-                    }
-                }
-            }
+        container.get_parent()?.remove_child(container);
+        targetActor.add_child(container);
+    };
+
+    // First: center indicators
+    for (let name of allKeys) {
+        if (centerNames.includes(name)) {
+            moveIndicator(name, this.centerActor);
         }
     }
+
+    // Second: any third-party/unknown extensions (not center, not pinned-right)
+    for (let name of allKeys) {
+        if (centerNames.includes(name)) continue;
+        if (pinnedRight.includes(name)) continue;
+        moveIndicator(name, this.actor);
+    }
+
+    // Last: pinned system indicators always at the far right
+    for (let name of pinnedRight) {
+        if (statusArea[name]) {
+            moveIndicator(name, this.actor);
+        }
+    }
+}
 
     destroy() {
         this._movedIndicators.forEach(({ indicator, originalParent, originalIndex }) => {
