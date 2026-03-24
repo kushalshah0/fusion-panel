@@ -4,7 +4,7 @@ import Clutter from 'gi://Clutter';
 export class PanelBlurEffect {
     constructor(sigma = 30, brightness = 0.6) {
         this._effect = new Shell.BlurEffect({
-            sigma: sigma,
+            radius: sigma,
             brightness: brightness,
             mode: Shell.BlurMode.ACTOR,
         });
@@ -15,11 +15,11 @@ export class PanelBlurEffect {
     }
 
     set sigma(value) {
-        this._effect.sigma = value;
+        this._effect.radius = value;
     }
 
     get sigma() {
-        return this._effect.sigma;
+        return this._effect.radius;
     }
 
     set brightness(value) {

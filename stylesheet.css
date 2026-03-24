@@ -140,8 +140,26 @@
 
 /* ===== SYSTEM INDICATORS ===== */
 .fusion-system-indicators {
-    padding: 0 4px;
-    spacing: 4px;
+    padding: 0 8px;
+    spacing: 0px;
+}
+
+.fusion-system-indicators StIcon {
+    icon-size: 18px;
+    margin: 0 6px;
+}
+
+.fusion-system-indicators .system-status-icon {
+    icon-size: 18px;
+    margin: 0 6px;
+}
+
+.fusion-system-indicators > * {
+    margin: 0 6px;
+}
+
+.fusion-system-indicators .popup-menu-boxpointer {
+    margin: 0 6px;
 }
 
 /* ===== TASKBAR SEPARATOR ===== */

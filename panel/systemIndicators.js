@@ -12,38 +12,42 @@ export class SystemIndicators {
             y_align: Clutter.ActorAlign.CENTER,
         });
 
-        // Steal indicators from GNOME's top panel
         this._stealIndicators();
     }
 
     _stealIndicators() {
-        // We'll clone the aggregate menu (the one with power, network, etc.)
-        // This is tricky — we essentially reparent GNOME's system indicators
-
         let statusArea = Main.panel.statusArea;
 
-        // The aggregate menu contains: network, bluetooth, volume, power, etc.
+        // Try all possible indicator names
         let indicatorsToMove = [
-            'aggregateMenu',      // GNOME 44 and below
-            'quickSettings',      // GNOME 45+
+            'aggregateMenu',
+            'quickSettings',
+            'messageIndicator',
+            'dateMenu',
+            'notifications',
         ];
 
-        for (let name of indicatorsToMove) {
-            if (statusArea[name]) {
+        // Also try moving ALL available indicators from statusArea
+        let allKeys = Object.keys(statusArea);
+        log('[Fusion Panel] statusArea keys: ' + allKeys.join(', '));
+
+        for (let name of allKeys) {
+            if (statusArea[name] && statusArea[name].container) {
                 let indicator = statusArea[name];
                 let container = indicator.container;
 
-                // Store original parent for restoration
-                this._movedIndicators.push({
-                    name: name,
-                    indicator: indicator,
-                    originalParent: container.get_parent(),
-                    originalIndex: container.get_parent()?.get_children().indexOf(container),
-                });
+                if (container && container.get_parent()) {
+                    this._movedIndicators.push({
+                        name: name,
+                        indicator: indicator,
+                        originalParent: container.get_parent(),
+                        originalIndex: container.get_parent()?.get_children().indexOf(container),
+                    });
 
-                // Reparent to our panel
-                container.get_parent()?.remove_child(container);
-                this.actor.add_child(container);
+                    container.get_parent()?.remove_child(container);
+                    this.actor.add_child(container);
+                    log('[Fusion Panel] Moved: ' + name);
+                }
             }
         }
     }
