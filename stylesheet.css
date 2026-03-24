@@ -1,22 +1,24 @@
-/* ========== PANEL ========== */
+/* ============================================
+   FUSION PANEL - Complete Stylesheet
+   ============================================ */
+
+/* ===== PANEL ===== */
 .fusion-panel {
-    /* background-color set via inline style from settings */
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
     transition-duration: 200ms;
 }
 
 .fusion-panel-left,
 .fusion-panel-center,
 .fusion-panel-right {
-    padding: 0 8px;
-    spacing: 4px;
-    /* Note: 'spacing' is a GNOME Shell specific property */
+    padding: 0 6px;
+    spacing: 2px;
 }
 
-/* ========== APP BUTTONS ========== */
+/* ===== APP BUTTONS ===== */
 .fusion-app-button {
     padding: 4px 6px;
-    margin: 2px;
     border-radius: 8px;
     transition-duration: 150ms;
 }
@@ -26,42 +28,75 @@
 }
 
 .fusion-app-button:active {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.fusion-app-button.running .fusion-app-indicator {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 3px;
-    margin-top: 2px;
+    background-color: rgba(255, 255, 255, 0.22);
 }
 
 .fusion-app-button.focused {
     background-color: rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid #3584e4;
+}
+
+.fusion-app-button.running .fusion-app-indicator {
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .fusion-app-button.focused .fusion-app-indicator {
     background-color: #3584e4;
-    width: 12px !important;
 }
 
+/* ===== APP INDICATOR ===== */
 .fusion-app-indicator {
-    border-radius: 3px;
+    border-radius: 2px;
+    height: 3px;
     margin-top: 2px;
     transition-duration: 200ms;
+    background-color: transparent;
 }
 
-/* ========== TOOLTIP ========== */
+.fusion-app-indicator.multi-window {
+    background: linear-gradient(
+        to right,
+        rgba(255,255,255,0.7) 0%,
+        rgba(255,255,255,0.7) 40%,
+        transparent 40%,
+        transparent 60%,
+        rgba(255,255,255,0.7) 60%,
+        rgba(255,255,255,0.7) 100%
+    );
+}
+
+/* ===== APP BADGES ===== */
+.fusion-app-badge {
+    background-color: #e01b24;
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    border-radius: 8px;
+    min-width: 16px;
+    min-height: 16px;
+    padding: 0 4px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.fusion-app-badge.urgent {
+    background-color: #ff0000;
+    box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
+}
+
+/* ===== TOOLTIP ===== */
 .fusion-tooltip {
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
     border-radius: 6px;
     padding: 6px 12px;
     font-size: 12px;
     font-weight: 500;
-    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* ========== CLOCK ========== */
+/* ===== CLOCK ===== */
 .fusion-clock-container {
     padding: 0 12px;
     spacing: 4px;
@@ -69,16 +104,16 @@
 
 .fusion-clock-time {
     color: white;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
 }
 
 .fusion-clock-date {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
 }
 
-/* ========== WORKSPACE INDICATOR ========== */
+/* ===== WORKSPACE INDICATOR ===== */
 .fusion-workspace-indicator {
     spacing: 4px;
     padding: 0 8px;
@@ -88,22 +123,102 @@
     width: 8px;
     height: 8px;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.25);
     transition-duration: 200ms;
     margin: 0 2px;
 }
 
 .fusion-workspace-dot.active {
     background-color: #3584e4;
-    width: 16px;
+    width: 18px;
+    border-radius: 4px;
 }
 
 .fusion-workspace-dot:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.45);
 }
 
-/* ========== SYSTEM INDICATORS ========== */
+/* ===== SYSTEM INDICATORS ===== */
 .fusion-system-indicators {
     padding: 0 4px;
     spacing: 4px;
+}
+
+/* ===== TASKBAR SEPARATOR ===== */
+.fusion-taskbar-separator {
+    background-color: rgba(255, 255, 255, 0.15);
+    margin: 8px 6px;
+    width: 1px;
+}
+
+/* ===== DRAG & DROP ===== */
+.fusion-drag-placeholder {
+    background-color: rgba(53, 132, 228, 0.3);
+    border-radius: 8px;
+    border: 2px dashed rgba(53, 132, 228, 0.6);
+}
+
+/* ===== WINDOW PREVIEW ===== */
+.fusion-preview-popup {
+    background-color: rgba(30, 30, 30, 0.95);
+    border-radius: 12px;
+    padding: 8px;
+    spacing: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.fusion-preview-thumbnail {
+    border-radius: 8px;
+    padding: 4px;
+    transition-duration: 150ms;
+}
+
+.fusion-preview-thumbnail:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.fusion-preview-thumb-box {
+    spacing: 4px;
+}
+
+.fusion-preview-clone-container {
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fusion-preview-title-bar {
+    padding: 4px 8px;
+    spacing: 8px;
+}
+
+.fusion-preview-title {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+}
+
+.fusion-preview-close {
+    border-radius: 50%;
+    padding: 2px;
+    transition-duration: 150ms;
+}
+
+.fusion-preview-close:hover {
+    background-color: rgba(224, 27, 36, 0.8);
+}
+
+/* ===== CONTEXT MENU ===== */
+.fusion-context-header .popup-menu-item {
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+}
+
+.fusion-context-quit .popup-menu-item {
+    color: #e01b24;
+}
+
+.fusion-context-quit .popup-menu-item:hover {
+    background-color: rgba(224, 27, 36, 0.2);
 }
