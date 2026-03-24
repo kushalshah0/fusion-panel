@@ -1,6 +1,6 @@
 # Fusion Panel
 
-A modern, customizable top panel replacement for GNOME Shell with a floating taskbar design, blur effects, and system indicators.
+A modern, customizable panel replacement for GNOME Shell with a floating taskbar design, blur effects, window previews, drag-and-drop, and multi-monitor support.
 
 ## Overview
 
@@ -8,11 +8,19 @@ Fusion Panel replaces the default GNOME top panel with a minimal, floating-style
 
 - Customizable position (top or bottom of screen)
 - Floating panel effect with adjustable margin
+- Multi-monitor support with per-monitor panels
 - Built-in blur effect behind the panel
+- Dynamic blur that tracks windows behind the panel
 - App taskbar with favorite and running app indicators
+- Drag-and-drop reordering of app icons
+- Window thumbnail previews on hover
+- Right-click context menus on app icons
+- Notification badges on app icons
+- Auto-hide functionality
 - Workspace indicator dots
 - Clock widget with customizable format
 - System tray integration (network, volume, power, etc.)
+- Smooth animations
 
 ## Requirements
 
@@ -43,26 +51,41 @@ Fusion Panel replaces the default GNOME top panel with a minimal, floating-style
 
 ```
 fusion-panel@kushalshah0/
-├── extension.js           # Main entry point, extension lifecycle
-├── prefs.js               # Preferences window (GTK4/Adwaita)
-├── stylesheet.css         # All styling for panel components
-├── metadata.json          # Extension metadata
+├── extension.js                 # Main entry point, extension lifecycle
+├── prefs.js                    # Preferences window (GTK4/Adwaita)
+├── stylesheet.css              # All styling for panel components
+├── metadata.json               # Extension metadata
 ├── panel/
-│   ├── panelManager.js    # Creates and manages the panel actor
-│   ├── taskbar.js         # App icons, favorites, running apps
-│   ├── clock.js           # Clock widget with format support
+│   ├── panelManager.js         # Panel creation, layout, multi-monitor, auto-hide
+│   ├── taskbar.js             # App icons, favorites, running apps, DnD, badges
+│   ├── clock.js               # Clock widget with format support
+│   ├── systemIndicators.js    # System tray reparenting
 │   ├── workspaceIndicator.js  # Workspace dots/numbers
-│   └── systemIndicators.js    # System tray reparenting
+│   ├── windowPreview.js       # Thumbnail previews on hover
+│   ├── contextMenu.js         # Right-click menus on app icons
+│   ├── appBadge.js            # Notification badges
+│   ├── dragDrop.js            # Drag and drop for reordering
+│   └── autoHide.js            # Auto-hide logic
 ├── blur/
-│   ├── blurManager.js     # Blur pipeline and positioning
-│   └── blurEffect.js      # Shell.BlurEffect wrapper
+│   ├── blurManager.js         # Static blur pipeline and positioning
+│   ├── blurEffect.js          # Shell.BlurEffect wrapper
+│   └── dynamicBlur.js        # Dynamic blur tracking windows behind panel
+├── animations/
+│   └── animator.js           # Animation effects (show/hide, transitions)
 ├── utils/
-│   └── settings.js        # GSettings helper class
+│   └── settings.js           # GSettings helper class
 └── schemas/
     └── org.gnome.shell.extensions.fusion-panel.gschema.xml
 ```
 
 ## Features
+
+### Multi-Monitor Support
+
+- Panels on all connected monitors
+- Per-monitor configuration
+- Auto-creation/removal on monitor connect/disconnect
+- Primary monitor indicator
 
 ### Panel Customization
 
@@ -71,13 +94,20 @@ fusion-panel@kushalshah0/
 - **Margin**: Create a floating panel effect with side margins
 - **Border Radius**: Round the panel corners (0-30 pixels)
 - **Background Color**: Custom background color with alpha transparency
+- **Auto-Hide**: Automatically hide panel when windows overlap
 
-### Blur Effect
+### Blur Effects
 
-- Toggle blur on/off
-- Adjust blur intensity (sigma: 0-100)
-- Adjust blur brightness (0.0-1.0)
-- Automatic synchronization with panel position
+- **Static Blur**: Blur the wallpaper behind the panel
+  - Toggle blur on/off
+  - Adjust blur intensity (sigma: 0-100)
+  - Adjust blur brightness (0.0-1.0)
+  - Automatic synchronization with panel position
+
+- **Dynamic Blur**: Track and blur windows behind the panel
+  - Real-time window tracking
+  - Works with fullscreen windows
+  - Performance optimized with timer-based updates
 
 ### Taskbar
 
@@ -90,6 +120,10 @@ fusion-panel@kushalshah0/
   - **LAUNCH**: Always launch new window
 - Icon size adjustment (16-64 pixels)
 - Workspace isolation option
+- **Drag and Drop**: Reorder app icons by dragging
+- **Window Previews**: Thumbnail previews on hover
+- **Context Menu**: Right-click for app options
+- **Notification Badges**: Show unread counts
 
 ### Clock
 
@@ -109,6 +143,12 @@ fusion-panel@kushalshah0/
 - Quick Settings menu (GNOME 45+)
 - Aggregate menu (GNOME 44 and below)
 
+### Animations
+
+- Smooth show/hide transitions
+- Panel visibility animations
+- Icon transitions on state change
+
 ## Settings
 
 All settings are stored in GSettings and can be configured via the Preferences window or dconf/gsettings commands.
@@ -120,18 +160,68 @@ All settings are stored in GSettings and can be configured via the Preferences w
 | `panel-margin` | int | 0 | Side margin for floating effect |
 | `panel-border-radius` | int | 0 | Corner radius in pixels |
 | `panel-bg-color` | string | "rgba(0, 0, 0, 0.3)" | Background color |
-| `blur-enabled` | boolean | true | Enable blur effect |
+| `blur-enabled` | boolean | true | Enable static blur |
 | `blur-sigma` | int | 30 | Blur intensity |
 | `blur-brightness` | double | 0.6 | Blur brightness |
+| `dynamic-blur` | boolean | false | Enable dynamic blur |
+| `multi-monitor` | boolean | true | Show panel on all monitors |
+| `auto-hide` | boolean | false | Auto-hide panel |
+| `auto-hide-timeout` | int | 300 | Delay before hiding (ms) |
+| `show-on-all-workspaces` | boolean | false | Show panel on all workspaces |
 | `icon-size` | int | 32 | App icon size |
 | `show-favorites` | boolean | true | Show favorite apps |
 | `show-running-apps` | boolean | true | Show running apps |
 | `isolate-workspaces` | boolean | false | Show only current workspace apps |
 | `click-action` | string | "TOGGLE" | App icon click behavior |
+| `show-window-previews` | boolean | true | Show window thumbnails |
+| `preview-delay` | int | 300 | Delay before showing preview (ms) |
+| `enable-drag-drop` | boolean | true | Enable drag and drop |
+| `enable-badges` | boolean | true | Show notification badges |
 | `clock-position` | string | "CENTER" | Clock position |
 | `clock-format` | string | "%H:%M" | Time format |
 | `show-date` | boolean | true | Show date |
 | `show-workspace-indicator` | boolean | true | Show workspace dots |
+
+## Architecture
+
+### Extension Lifecycle
+
+1. **init()**: Called when extension is loaded
+2. **enable()**: 
+   - Initialize SettingsManager
+   - Create Animator for animations
+   - Create WindowPreviewManager and BadgeManager
+   - Create PanelManager and enable it (creates per-monitor panels)
+   - Create BlurManager and DynamicBlurManager
+3. **disable()**:
+   - Disable and destroy BlurManager
+   - Disable and destroy DynamicBlurManager
+   - Disable and destroy PanelManager (restores original GNOME panel)
+   - Clean up settings
+
+### Panel Structure
+
+The panel uses a three-box layout:
+- **Left Box**: Workspace indicator, Taskbar
+- **Center Box**: Clock (optional)
+- **Right Box**: System indicators
+
+### Multi-Monitor Architecture
+
+- `PanelInstance` class manages individual monitor panels
+- `PanelManager` creates and coordinates multiple instances
+- Each monitor gets its own panel with independent positioning
+- Settings changes propagate to all instances
+
+### Signal Handling
+
+All components listen for:
+- Settings changes (via GSettings signals)
+- Workspace switches
+- App state changes
+- Monitor changes (for multi-monitor support)
+- Window focus changes
+- Drag and drop events
 
 ## Development
 
@@ -154,35 +244,6 @@ journalctl -f -o cat | grep "Fusion Panel"
 ```
 
 Enable debugging in extension.js by adding more log statements.
-
-## Architecture
-
-### Extension Lifecycle
-
-1. **init()**: Called when extension is loaded
-2. **enable()**: 
-   - Initialize SettingsManager
-   - Create PanelManager and enable it
-   - Create BlurManager and enable it with panel actor
-3. **disable()**:
-   - Disable and destroy BlurManager
-   - Disable and destroy PanelManager (restores original GNOME panel)
-   - Clean up settings
-
-### Panel Structure
-
-The panel uses a three-box layout:
-- **Left Box**: Workspace indicator, Taskbar
-- **Center Box**: Clock (optional)
-- **Right Box**: System indicators
-
-### Signal Handling
-
-All components listen for:
-- Settings changes (via GSettings signals)
-- Workspace switches
-- App state changes
-- Monitor changes (for multi-monitor support)
 
 ## Compatibility
 
