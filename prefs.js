@@ -220,6 +220,9 @@ export default class FusionPanelPreferences extends ExtensionPreferences {
         // ==========================================
         // PAGE 6: ABOUT
         // ==========================================
+        // ==========================================
+        // PAGE 6: ABOUT
+        // ==========================================
         let aboutPage = new Adw.PreferencesPage({
             title: 'About',
             icon_name: 'help-about-symbolic',
@@ -227,34 +230,63 @@ export default class FusionPanelPreferences extends ExtensionPreferences {
 
         let aboutGroup = new Adw.PreferencesGroup({
             title: 'Fusion Panel',
-            description: 'A minimal taskbar panel with built-in blur effect.\n\n' +
-                        'Inspired by Dash to Panel and Blur my Shell.\n\n' +
-                        'Version 1.0\n' +
-                        'License: GPL v3',
+            description: 'A minimal taskbar panel with built-in blur effect.',
         });
 
-        let resetRow = new Adw.ActionRow({
-            title: 'Reset All Settings',
-            subtitle: 'Restore all settings to defaults',
+        // Developer row
+        let developerRow = new Adw.ActionRow({
+            title: 'Developer',
+            subtitle: 'Kushal Shah',
         });
-
-        let resetButton = new Gtk.Button({
-            label: 'Reset',
+        developerRow.add_prefix(new Gtk.Image({
+            icon_name: 'avatar-default-symbolic',
             valign: Gtk.Align.CENTER,
-            css_classes: ['destructive-action'],
+        }));
+        aboutGroup.add(developerRow);
+
+        // Version row
+        let versionRow = new Adw.ActionRow({
+            title: 'Version',
+            subtitle: '1.0',
         });
+        versionRow.add_prefix(new Gtk.Image({
+            icon_name: 'dialog-information-symbolic',
+            valign: Gtk.Align.CENTER,
+        }));
+        aboutGroup.add(versionRow);
 
-        resetButton.connect('clicked', () => {
-            let keys = settings.settings_schema.list_keys();
-            keys.forEach(key => settings.reset(key));
-
-            // Show toast
-            let toast = new Adw.Toast({ title: 'All settings reset to defaults' });
-            window.add_toast(toast);
+        // License row
+        let licenseRow = new Adw.ActionRow({
+            title: 'License',
+            subtitle: 'GPL v3',
         });
+        licenseRow.add_prefix(new Gtk.Image({
+            icon_name: 'text-x-generic-symbolic',
+            valign: Gtk.Align.CENTER,
+        }));
+        aboutGroup.add(licenseRow);
 
-        resetRow.add_suffix(resetButton);
-        aboutGroup.add(resetRow);
+        // GitHub row
+        let githubRow = new Adw.ActionRow({
+            title: 'Source Code',
+            subtitle: 'github.com/kushalshah0/fusion-panel',
+            activatable: true,
+        });
+        githubRow.add_prefix(new Gtk.Image({
+            icon_name: 'network-workgroup-symbolic',
+            valign: Gtk.Align.CENTER,
+        }));
+        githubRow.add_suffix(new Gtk.Image({
+            icon_name: 'go-next-symbolic',
+            valign: Gtk.Align.CENTER,
+        }));
+        githubRow.connect('activated', () => {
+            Gio.AppInfo.launch_default_for_uri(
+                'https://github.com/kushalshah0/fusion-panel',
+                null
+            );
+        });
+        aboutGroup.add(githubRow);
 
         aboutPage.add(aboutGroup);
 
