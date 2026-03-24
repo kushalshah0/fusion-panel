@@ -5,5 +5,7 @@
     "shell-version": ["45", "46", "47"],
     "version": 1,
     "settings-schema": "org.gnome.shell.extensions.fusion-panel",
-    "url": "https://github.com/kushalshah0/fusion-panel"
+    "url": "https://github.com/kushalshah0/fusion-panel",
+    "author": "Kushal Shah",
+    "copyright": "2026 Kushal Shah"
 }
