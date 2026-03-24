@@ -7,6 +7,13 @@ export class SystemIndicators {
         this._settings = settings;
         this._movedIndicators = [];
 
+        // Center actor: clock/date + notifications
+        this.centerActor = new St.BoxLayout({
+            style_class: 'fusion-system-indicators',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        // Right actor: wifi, sound, battery, etc.
         this.actor = new St.BoxLayout({
             style_class: 'fusion-system-indicators',
             y_align: Clutter.ActorAlign.CENTER,
@@ -18,18 +25,10 @@ export class SystemIndicators {
     _stealIndicators() {
         let statusArea = Main.panel.statusArea;
 
-        // Try all possible indicator names
-        let indicatorsToMove = [
-            'aggregateMenu',
-            'quickSettings',
-            'messageIndicator',
-            'dateMenu',
-            'notifications',
-        ];
+        // These go to center
+        const centerNames = ['dateMenu', 'messageIndicator', 'notifications'];
 
-        // Also try moving ALL available indicators from statusArea
         let allKeys = Object.keys(statusArea);
-        log('[Fusion Panel] statusArea keys: ' + allKeys.join(', '));
 
         for (let name of allKeys) {
             if (statusArea[name] && statusArea[name].container) {
@@ -38,22 +37,26 @@ export class SystemIndicators {
 
                 if (container && container.get_parent()) {
                     this._movedIndicators.push({
-                        name: name,
-                        indicator: indicator,
+                        name,
+                        indicator,
                         originalParent: container.get_parent(),
                         originalIndex: container.get_parent()?.get_children().indexOf(container),
                     });
 
                     container.get_parent()?.remove_child(container);
-                    this.actor.add_child(container);
-                    log('[Fusion Panel] Moved: ' + name);
+
+                    // Route to center or right
+                    if (centerNames.includes(name)) {
+                        this.centerActor.add_child(container);
+                    } else {
+                        this.actor.add_child(container);
+                    }
                 }
             }
         }
     }
 
     destroy() {
-        // Restore indicators to original panel
         this._movedIndicators.forEach(({ indicator, originalParent, originalIndex }) => {
             let container = indicator.container;
             container.get_parent()?.remove_child(container);
@@ -68,6 +71,8 @@ export class SystemIndicators {
         });
 
         this._movedIndicators = [];
+        this.centerActor?.destroy();
+        this.centerActor = null;
         this.actor?.destroy();
         this.actor = null;
     }

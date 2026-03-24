@@ -33,7 +33,7 @@
 
 .fusion-app-button.focused {
     background-color: rgba(255, 255, 255, 0.1);
-    border-bottom: 2px solid #3584e4;
+    /* border-bottom: 2px solid #3584e4; */
 }
 
 .fusion-app-button.running .fusion-app-indicator {
@@ -115,27 +115,32 @@
 
 /* ===== WORKSPACE INDICATOR ===== */
 .fusion-workspace-indicator {
-    spacing: 4px;
-    padding: 0 8px;
+    spacing: 0px;
+    padding: 2px 4px;
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    border-radius: 20px;
+    margin: 0 6px;
 }
 
 .fusion-workspace-dot {
     width: 8px;
     height: 8px;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.3);
     transition-duration: 200ms;
-    margin: 0 2px;
+    margin: 0 3px;
+    padding: 0;
+    border: none;
 }
 
 .fusion-workspace-dot.active {
-    background-color: #3584e4;
-    width: 18px;
+    background-color: white;
+    width: 25px;
     border-radius: 4px;
 }
 
 .fusion-workspace-dot:hover {
-    background-color: rgba(255, 255, 255, 0.45);
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 /* ===== SYSTEM INDICATORS ===== */
@@ -160,6 +165,22 @@
 
 .fusion-system-indicators .popup-menu-boxpointer {
     margin: 0 6px;
+}
+
+.fusion-system-indicators .system-menu-action,
+.fusion-system-indicators .icon-button,
+.fusion-system-indicators .quick-toggle-button,
+.fusion-system-indicators .g快速设置图标按钮,
+.fusion-system-indicators button {
+    border-radius: 8px;
+    transition-duration: 150ms;
+}
+
+.fusion-system-indicators .system-menu-action:hover,
+.fusion-system-indicators .icon-button:hover,
+.fusion-system-indicators .quick-toggle-button:hover,
+.fusion-system-indicators button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* ===== TASKBAR SEPARATOR ===== */

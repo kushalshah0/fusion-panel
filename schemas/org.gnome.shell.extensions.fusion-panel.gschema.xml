@@ -10,7 +10,7 @@
     </key>
 
     <key name="panel-height" type="i">
-      <default>48</default>
+      <default>45</default>
       <summary>Panel height</summary>
     </key>
 

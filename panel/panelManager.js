@@ -3,7 +3,6 @@ import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Taskbar } from './taskbar.js';
-import { ClockWidget } from './clock.js';
 import { WorkspaceIndicator } from './workspaceIndicator.js';
 import { SystemIndicators } from './systemIndicators.js';
 import { WindowPreviewManager } from './windowPreview.js';
@@ -106,24 +105,10 @@ class PanelInstance {
         );
         this._leftBox.add_child(this._taskbar.actor);
 
-        // Clock
-        this._clock = new ClockWidget(this._settings);
-        let clockPosition = this._settings.get('clock-position');
-        switch (clockPosition) {
-            case 'LEFT':
-                this._leftBox.insert_child_at_index(this._clock.actor, 0);
-                break;
-            case 'CENTER':
-                this._centerBox.add_child(this._clock.actor);
-                break;
-            case 'RIGHT':
-                this._rightBox.add_child(this._clock.actor);
-                break;
-        }
-
         // System indicators (primary monitor only)
         if (this._isPrimary) {
             this._systemIndicators = new SystemIndicators(this._settings);
+            this._centerBox.add_child(this._systemIndicators.centerActor);
             this._rightBox.add_child(this._systemIndicators.actor);
         }
 
@@ -184,8 +169,8 @@ class PanelInstance {
         this._taskbar?.destroy();
         this._taskbar = null;
 
-        this._clock?.destroy();
-        this._clock = null;
+        // this._clock?.destroy();
+        // this._clock = null;
 
         this._systemIndicators?.destroy();
         this._systemIndicators = null;
