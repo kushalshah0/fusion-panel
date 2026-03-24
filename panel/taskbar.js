@@ -441,24 +441,6 @@ export class Taskbar {
             });
         }
 
-        // Separator between favorites and running apps
-        if (showFavorites && showRunning) {
-            let runningApps = this._getRunningApps();
-            let hasNonFavoriteRunning = runningApps.some(
-                app => !this._appButtons.has(app.get_id())
-            );
-
-            if (hasNonFavoriteRunning) {
-                let separator = new St.Widget({
-                    style_class: 'fusion-taskbar-separator',
-                    width: 1,
-                    y_expand: true,
-                    y_align: Clutter.ActorAlign.CENTER,
-                });
-                this.actor.add_child(separator);
-            }
-        }
-
         // Running apps
         if (showRunning) {
             let runningApps = this._getRunningApps();
