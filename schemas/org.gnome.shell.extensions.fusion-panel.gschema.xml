@@ -3,32 +3,70 @@
   <schema id="org.gnome.shell.extensions.fusion-panel"
           path="/org/gnome/shell/extensions/fusion-panel/">
 
-    <!-- Panel Settings -->
+    <!-- ===== Panel Settings ===== -->
     <key name="panel-position" type="s">
       <default>'BOTTOM'</default>
       <summary>Panel position</summary>
-      <description>Position of the panel: TOP or BOTTOM</description>
     </key>
 
     <key name="panel-height" type="i">
       <default>48</default>
       <summary>Panel height</summary>
-      <description>Height of the panel in pixels</description>
     </key>
 
     <key name="panel-margin" type="i">
       <default>0</default>
       <summary>Panel margin</summary>
-      <description>Margin around the panel (creates floating effect)</description>
     </key>
 
     <key name="panel-border-radius" type="i">
       <default>0</default>
       <summary>Panel border radius</summary>
-      <description>Corner radius of the panel</description>
     </key>
 
-    <!-- Blur Settings -->
+    <key name="panel-bg-color" type="s">
+      <default>'rgba(0, 0, 0, 0.3)'</default>
+      <summary>Panel background color</summary>
+    </key>
+
+    <!-- ===== Multi-Monitor ===== -->
+    <key name="multi-monitor" type="b">
+      <default>true</default>
+      <summary>Show panel on all monitors</summary>
+    </key>
+
+    <key name="primary-monitor-only-favorites" type="b">
+      <default>false</default>
+      <summary>Show favorites only on primary monitor</summary>
+    </key>
+
+    <!-- ===== Auto-Hide ===== -->
+    <key name="auto-hide" type="b">
+      <default>false</default>
+      <summary>Auto-hide the panel</summary>
+    </key>
+
+    <key name="auto-hide-delay" type="i">
+      <default>1000</default>
+      <summary>Delay before hiding (ms)</summary>
+    </key>
+
+    <key name="auto-hide-animation-duration" type="i">
+      <default>200</default>
+      <summary>Hide/show animation duration (ms)</summary>
+    </key>
+
+    <key name="show-panel-on-overview" type="b">
+      <default>true</default>
+      <summary>Show panel when overview is open</summary>
+    </key>
+
+    <key name="pressure-threshold" type="i">
+      <default>100</default>
+      <summary>Hot edge pressure threshold to reveal panel</summary>
+    </key>
+
+    <!-- ===== Blur Settings ===== -->
     <key name="blur-enabled" type="b">
       <default>true</default>
       <summary>Enable blur</summary>
@@ -37,21 +75,19 @@
     <key name="blur-sigma" type="i">
       <default>30</default>
       <summary>Blur sigma</summary>
-      <description>Blur intensity (0-100)</description>
     </key>
 
     <key name="blur-brightness" type="d">
       <default>0.6</default>
       <summary>Blur brightness</summary>
-      <description>Brightness of blurred background (0.0-1.0)</description>
     </key>
 
-    <key name="panel-bg-color" type="s">
-      <default>'rgba(0, 0, 0, 0.3)'</default>
-      <summary>Panel background color</summary>
+    <key name="dynamic-blur" type="b">
+      <default>false</default>
+      <summary>Dynamic blur (blur windows behind panel)</summary>
     </key>
 
-    <!-- Taskbar Settings -->
+    <!-- ===== Taskbar Settings ===== -->
     <key name="icon-size" type="i">
       <default>32</default>
       <summary>Icon size</summary>
@@ -75,20 +111,55 @@
     <key name="isolate-workspaces" type="b">
       <default>false</default>
       <summary>Isolate workspaces</summary>
-      <description>Only show apps from current workspace</description>
     </key>
 
     <key name="click-action" type="s">
       <default>'TOGGLE'</default>
       <summary>Click action</summary>
-      <description>TOGGLE, CYCLE, PREVIEW, LAUNCH</description>
     </key>
 
-    <!-- Clock Settings -->
+    <key name="enable-drag-drop" type="b">
+      <default>true</default>
+      <summary>Enable drag and drop reordering</summary>
+    </key>
+
+    <!-- ===== Window Preview ===== -->
+    <key name="show-window-previews" type="b">
+      <default>true</default>
+      <summary>Show window previews on hover</summary>
+    </key>
+
+    <key name="preview-width" type="i">
+      <default>240</default>
+      <summary>Preview thumbnail width</summary>
+    </key>
+
+    <key name="preview-height" type="i">
+      <default>160</default>
+      <summary>Preview thumbnail height</summary>
+    </key>
+
+    <key name="preview-delay" type="i">
+      <default>300</default>
+      <summary>Delay before showing preview (ms)</summary>
+    </key>
+
+    <!-- ===== App Badges ===== -->
+    <key name="show-app-badges" type="b">
+      <default>true</default>
+      <summary>Show notification count badges</summary>
+    </key>
+
+    <!-- ===== Context Menu ===== -->
+    <key name="show-context-menu" type="b">
+      <default>true</default>
+      <summary>Show right-click context menu</summary>
+    </key>
+
+    <!-- ===== Clock Settings ===== -->
     <key name="clock-position" type="s">
       <default>'CENTER'</default>
       <summary>Clock position</summary>
-      <description>LEFT, CENTER, or RIGHT</description>
     </key>
 
     <key name="clock-format" type="s">
@@ -101,10 +172,27 @@
       <summary>Show date with clock</summary>
     </key>
 
-    <!-- Workspace Indicator -->
+    <!-- ===== Workspace Indicator ===== -->
     <key name="show-workspace-indicator" type="b">
       <default>true</default>
       <summary>Show workspace indicator</summary>
+    </key>
+
+    <!-- ===== Animations ===== -->
+    <key name="animation-type" type="s">
+      <default>'SLIDE'</default>
+      <summary>Panel animation type: SLIDE, FADE, SCALE, NONE</summary>
+    </key>
+
+    <key name="animation-duration" type="i">
+      <default>250</default>
+      <summary>Animation duration in ms</summary>
+    </key>
+
+    <!-- ===== Saved icon order for drag-drop ===== -->
+    <key name="icon-order" type="as">
+      <default>[]</default>
+      <summary>Custom icon order from drag and drop</summary>
     </key>
 
   </schema>
