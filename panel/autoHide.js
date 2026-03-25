@@ -1,3 +1,4 @@
+import Shell from 'gi://Shell';
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
@@ -95,7 +96,7 @@ export class AutoHideManager {
         this._pressureBarrier = new Meta.PressureBarrier(
             threshold,
             1000,                               // timeout (ms)
-            Shell?.ActionMode?.NORMAL || 0      // action mode
+            Shell?.ActionMode?.NORMAL           // action mode
         );
 
         this._pressureBarrier.connect('trigger', () => {
@@ -133,34 +134,33 @@ export class AutoHideManager {
     }
 
     _showPanel() {
-        if (!this._isHidden) return;
-
         this._isHidden = false;
         let panelPosition = this._settings.get('panel-position');
+
+        this._panelActor.show();
+        if (this._blurActor) this._blurActor.show();
 
         if (this._animator) {
             this._animator.animateShow(this._panelActor, panelPosition);
             if (this._blurActor)
                 this._animator.animateShow(this._blurActor, panelPosition);
-        } else {
-            this._panelActor.show();
-            if (this._blurActor) this._blurActor.show();
         }
 
-        // Restore struts (so windows don't overlap)
         Main.layoutManager._updateHotCorners();
     }
 
     _hidePanel() {
-        if (this._isHidden) return;
-
         this._isHidden = true;
         let panelPosition = this._settings.get('panel-position');
 
         if (this._animator) {
-            this._animator.animateHide(this._panelActor, panelPosition);
+            this._animator.animateHide(this._panelActor, panelPosition, () => {
+                this._panelActor.hide();
+            });
             if (this._blurActor)
-                this._animator.animateHide(this._blurActor, panelPosition);
+                this._animator.animateHide(this._blurActor, panelPosition, () => {
+                    this._blurActor.hide();
+                });
         } else {
             this._panelActor.hide();
             if (this._blurActor) this._blurActor.hide();
@@ -227,7 +227,7 @@ export class AutoHideManager {
                     source.disconnect(id);
                 else
                     this._settings.disconnect(id);
-            } catch (e) {}
+            } catch (e) { }
         });
         this._signals = [];
 

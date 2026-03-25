@@ -1,0 +1,18 @@
+# GNOME Shell extension build artifacts
+*.zip
+*.tar.gz
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Backup files
+*.bak
+*.orig
